@@ -3,8 +3,3 @@ orig
 
 # Output directory
 out
-
-# Output files
-*.SYS
-*.BIN
-*.list

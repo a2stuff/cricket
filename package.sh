@@ -5,34 +5,24 @@
 
 set -e
 
-PACKDIR="out/package"
-FINFO="$PACKDIR/_FileInformation.txt"
-IMGFILE="cricket.po"
+PACKDIR=$(mktemp -d)
+IMGFILE="out/cricket.po"
 VOLNAME="cricket"
 
-mkdir -p "$PACKDIR"
-echo "" > "$FINFO"
-
-# Copy renamed files (with type/auxtype info) into package directory.
-
-cp "out/ns.clock.system.SYS" "$PACKDIR/ns.clock.system#FF0000"
-cp "out/cricket.system.SYS" "$PACKDIR/cricket.system#FF0000"
-cp "out/test.BIN" "$PACKDIR/test#062000"
-cp "out/date.BIN" "$PACKDIR/date#062000"
-cp "out/set.date.BIN" "$PACKDIR/set.date#062000"
-cp "out/set.time.BIN" "$PACKDIR/set.time#062000"
-\
-# Create a new disk image.
-
 rm -f "$IMGFILE"
-
 cadius CREATEVOLUME "$IMGFILE" "$VOLNAME" 140KB --no-case-bits --quiet
-cadius ADDFILE "$IMGFILE" "/$VOLNAME" "$PACKDIR/ns.clock.system#FF0000" --no-case-bits --quiet
-cadius ADDFILE "$IMGFILE" "/$VOLNAME" "$PACKDIR/cricket.system#FF0000" --no-case-bits --quiet
-cadius ADDFILE "$IMGFILE" "/$VOLNAME" "$PACKDIR/test#062000" --no-case-bits --quiet
-cadius ADDFILE "$IMGFILE" "/$VOLNAME" "$PACKDIR/date#062000" --no-case-bits --quiet
-cadius ADDFILE "$IMGFILE" "/$VOLNAME" "$PACKDIR/set.date#062000" --no-case-bits --quiet
-cadius ADDFILE "$IMGFILE" "/$VOLNAME" "$PACKDIR/set.time#062000" --no-case-bits --quiet
+
+add_file () {
+    cp "$1" "$PACKDIR/$2"
+    cadius ADDFILE "$IMGFILE" "/$VOLNAME" "$PACKDIR/$2" --no-case-bits --quiet
+}
+
+add_file "out/ns.clock.system.SYS" "ns.clock.system#FF0000"
+add_file "out/cricket.system.SYS" "cricket.system#FF0000"
+add_file "out/test.BIN" "test#062000"
+add_file "out/date.BIN" "date#062000"
+add_file "out/set.date.BIN" "set.date#062000"
+add_file "out/set.time.BIN" "set.time#062000"
 
 rm -r "$PACKDIR"
 
