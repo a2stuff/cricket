@@ -1,3 +1,11 @@
+# MOVED
+
+The new home is at:
+
+https://github.com/a2stuff/prodos-drivers
+
+... which includes this plus several other ProDOS drivers. There's better documentation there too.
+
 # _The Cricket!_ &mdash; ProDOS Clock Driver
 
 [![Build Status](https://travis-ci.org/a2stuff/cricket.svg?branch=master)](https://travis-ci.org/a2stuff/cricket)
